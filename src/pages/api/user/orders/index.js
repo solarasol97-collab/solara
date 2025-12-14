@@ -1,6 +1,8 @@
 // pages/api/user/orders/list.js
-import { prisma } from "../../../../lib/prisma";
-import { authenticate } from "../../../../lib/middleware/auth";
+// import { prisma } from "../../../../lib/prisma";
+import { prisma } from "../../../../../lib/prisma";
+import { authenticate } from "../../../../../lib/middleware/auth";
+
 
 function runMiddleware(req, res, fn) {
   return new Promise((resolve, reject) => {
@@ -23,7 +25,6 @@ export default async function handler(req, res) {
   }
 
   const user = req.user;
-
   if (req.method !== "GET") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
