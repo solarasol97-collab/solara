@@ -84,7 +84,7 @@
 //   }
 // }
 
-import { prisma } from "../../../../lib/prisma";
+import { prisma } from "../../../../lib/prisma.js";
 import { authenticate } from "../../../../lib/middleware/auth";
 
 // Run Next.js-style middleware
