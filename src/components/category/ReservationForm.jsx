@@ -235,10 +235,11 @@ function ReservationForm() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
     guests: "",
     date: null,
     time: "",
+    specialRequest:""
   });
 
   const handleChange = (e) => {
@@ -250,9 +251,23 @@ function ReservationForm() {
     setFormData((prev) => ({ ...prev, date }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Reservation submitted:", formData);
+        try {
+      const res = await fetch('/api/reservations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({...formData,specialRequest:formData.specialRequest || ""}),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Something went wrong');
+      window.location.href = "/shop";
+      // Optionally redirect
+    } catch (err) {
+      console.error('Error submitting reservation:', err);
+      }
     // Add your submission logic here
   };
 
@@ -280,12 +295,12 @@ function ReservationForm() {
           </div>
           <Grid>
             <div>
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="phoneNumber">Phone Number</Label>
               <Input
                 type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
+                id="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
                 onChange={handleChange}
                 placeholder="(123) 456-7890"
                 required
@@ -354,12 +369,12 @@ function ReservationForm() {
             </div>
           </Grid>
           <div>
-              <Label htmlFor="specialRequests">Special Requests</Label>
+              <Label htmlFor="specialRequest">Special Requests</Label>
               <Input
                  type="text"
-                 id="specialRequests"
-                 name="specialRequests"
-               value={formData.specialRequests}
+                 id="specialRequest"
+                 name="specialRequest"
+               value={formData.specialRequest}
                onChange={handleChange}
                placeholder="Any dietary restrictions or special occasions?"
              />

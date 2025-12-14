@@ -116,6 +116,7 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column; /* ✅ Always stack vertically */
   gap: 1rem;
+  margin-top: 2rem;
 `;
 
 const ProductCard = styled.div`
@@ -382,8 +383,8 @@ function Cart() {
       <Container>
       <Toaster position="top-center" reverseOrder={false} />
         <Header>
-          <Title>Cart</Title>
-          <Subtitle>Review your items and proceed to checkout</Subtitle>
+          <Title></Title>
+          <Subtitle></Subtitle>
         </Header>
         <ContentWrapper>
           <ProductCard>

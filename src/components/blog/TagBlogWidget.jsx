@@ -6,18 +6,23 @@ function TagBlogWidget({ setCategoryId }) {
   const [categories, setCategories] = useState([]);
   const [activeCatId, setActiveCatId] = useState(null);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await axios.get("/api/categories");
-        setCategories(res.data.categories);
-      } catch (error) {
-        console.error("Failed to fetch categories", error);
-      }
-    };
+    useEffect(() => {
+      const fetchCategories = async () => {
+        try {
+          const res = await axios.get("/api/categories");
+          // Filter only available categories
+          const availableCategories = res.data.filter(
+            (cat) => cat.status === "available"
+          );
+          setCategories(availableCategories);
+        } catch (error) {
+          console.error("Failed to fetch categories", error);
+        }
+      };
 
-    fetchCategories();
-  }, []);
+      fetchCategories();
+    }, []);
+
 
   const handleCategoryClick = (id) => {
     setCategoryId(id);

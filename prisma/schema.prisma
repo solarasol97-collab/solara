@@ -7,7 +7,7 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
+ 
 model User {
   id        Int      @id @default(autoincrement())
   name      String
@@ -19,33 +19,47 @@ model User {
   orders Order[]
 }
 
+enum AvailabilityStatus {
+  available
+  unavailable
+}
+
+
 model Category {
   id       Int       @id @default(autoincrement())
   name     String
+  status   AvailabilityStatus @default(available) // added status
   products Product[]
 }
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  categoryId  Int
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  category    Category    @relation(fields: [categoryId], references: [id])
+  tags        Tag[]       @relation("ProductToTag")
+  cart        cart[]
+  OrderItem   OrderItem[]
+  images      Image[]
+  status      AvailabilityStatus @default(available) // added status
+
+  relatedProducts Product[] @relation("RelatedProducts")
+  relatedTo       Product[] @relation("RelatedProducts")
+
+  @@index([categoryId], map: "Product_categoryId_fkey")
+}
+
+
+
 
 model Tag {
   id       Int       @id @default(autoincrement())
   name     String
   products Product[] @relation("ProductToTag")
-}
-
-model Product {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  price       Float
-  categoryId  Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  category    Category @relation(fields: [categoryId], references: [id])
-  tags        Tag[]    @relation("ProductToTag")
-  cart      cart[]
-  OrderItem OrderItem[]
-  images      Image[]
-
-  @@index([categoryId], map: "Product_categoryId_fkey")
 }
 
 model Image {
@@ -65,18 +79,33 @@ model cart {
   Product Product @relation(fields: [productId], references: [id])
 }
 
+enum OrderType {
+  takeaway
+  delivery
+  parking
+}
 
 model Order {
-  id          Int          @id @default(autoincrement())
-  user        User         @relation(fields: [userId], references: [id])
-  userId      Int
-  items       OrderItem[]
-  totalAmount Float
-  status      String       @default("pending") // e.g. "pending", "paid", "shipped", etc.
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  shippingAddress Json? 
+  id             Int          @id @default(autoincrement())
+  user           User         @relation(fields: [userId], references: [id])
+  userId         Int
+  items          OrderItem[]
+  totalAmount    Float
+  status         String       @default("pending")
+  orderType      OrderType    @default(delivery)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // You want these:
+  orderCode      String?      // external order identifier (not the PK)
+  billingName    String?
+  orderDate      DateTime?
+  paymentStatus  String?      // "Paid", "Pending", "Refunded"
+  paymentMethod  String?      // "Visa", "Mastercard", "Cash"
+  
+  shippingAddress Json?
 }
+
 
 model OrderItem {
   id        Int     @id @default(autoincrement())
@@ -86,4 +115,26 @@ model OrderItem {
   productId Int
   quantity  Int
   price     Float   // snapshot of price at order time
+}
+
+
+enum ReservationStatus {
+  pending
+  approved
+  rejected
+  completed
+}
+
+model Reservation {
+  id             Int      @id @default(autoincrement())
+  fullName       String
+  phoneNumber    String
+  email          String?
+  guests         Int
+  date           DateTime
+  time           String
+  specialRequest String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  status         ReservationStatus @default(pending)
 }

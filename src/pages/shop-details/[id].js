@@ -146,7 +146,7 @@ function ShopDetails() {
           </div>
           <div className="row">
           {/* <div className="row"> */}
-            <div className="col-lg-5 col-md-12 col-sm-12">
+            {/* <div className="col-lg-5 col-md-12 col-sm-12">
               <div className="tab-content tab-content1" id="v-pills-tabContent">
                 <div
                   className="tab-pane fade active show"
@@ -200,7 +200,45 @@ function ShopDetails() {
                 </div>
               </div>
              
+            </div> */}
+            <div className="col-lg-5 col-md-12 col-sm-12">
+              <div style={{ position: "sticky", top: "100px" }}>
+                <div className="tab-content tab-content1" id="v-pills-tabContent">
+                  <div
+                    className="tab-pane fade active show"
+                    id="v-pills-img1"
+                    role="tabpanel"
+                    aria-labelledby="v-pills-img1-tab"
+                  >
+                    <div className="gallery-big-image">
+                      <img
+                        className="img-fluid w-100"
+                        src={product?.images[0]?.url}
+                        alt={product?.name || "Product Image"}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Other tab images below */}
+                  <div className="tab-pane fade" id="v-pills-img2" role="tabpanel">
+                    <img
+                      className="img-fluid w-100"
+                      src={product?.images[0]?.url}
+                      alt={product?.name || "Product Image"}
+                    />
+                  </div>
+
+                  <div className="tab-pane fade" id="v-pills-img3" role="tabpanel">
+                    <img
+                      className="img-fluid w-100"
+                      src={product?.images[1]?.url}
+                      alt={product?.name || "Product Image"}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div className="col-lg-7 col-md-12 col-sm-12" style={{maxWidth:'max-content'}}>
               <div className="prod-details-content">
      
