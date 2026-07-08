@@ -5,26 +5,29 @@ This backend no longer uses Hostinger MySQL. Use **Vercel Postgres** instead.
 ## 1. Create a Postgres database in Vercel
 
 1. Open [vercel.com/dashboard](https://vercel.com/dashboard)
-2. Open the **solara** project (the one connected to `solaraordering.com`)
+2. Open the **solara-main** project (the one connected to `solaraordering.com`)
 3. Go to the **Storage** tab
 4. Click **Create Database** → choose **Postgres**
-5. Name it (e.g. `solara-db`) and connect it to the **solara** project
-6. Vercel will automatically add these environment variables:
+5. Name it (e.g. `solara-db`) and connect it to the **solara-main** project
+6. Vercel will automatically add environment variables such as:
    - `POSTGRES_URL`
    - `POSTGRES_PRISMA_URL`
    - `POSTGRES_URL_NON_POOLING`
+   - Or `DATABASE_URL` if you used the `DATABASE` prefix when connecting
 
-## 2. Set DATABASE_URL
+## 2. Confirm a database URL exists
 
-1. In the **solara** project → **Settings** → **Environment Variables**
-2. Add or update:
+The build script accepts any of these (in order):
+- `DATABASE_URL`
+- `POSTGRES_PRISMA_URL`
+- `STORAGE_URL`
+- `POSTGRES_URL`
 
-| Name | Value |
-|------|--------|
-| `DATABASE_URL` | Copy the value of `POSTGRES_PRISMA_URL` |
+If you connected Neon with the `DATABASE` prefix, `DATABASE_URL` is created automatically.
 
-3. Apply to **Production**, **Preview**, and **Development**
-4. Save
+If not, go to **solara-main → Settings → Environment Variables** and either:
+- Confirm `DATABASE_URL` exists, **or**
+- Add `DATABASE_URL` with the value copied from `POSTGRES_PRISMA_URL`
 
 ## 3. Remove the old Hostinger DATABASE_URL (if present)
 
