@@ -9,6 +9,8 @@ src/generated/prisma/
 
 # Environment variables
 .env
+.env.*
+!.env.example
 
 # OS-specific files
 .DS_Store
