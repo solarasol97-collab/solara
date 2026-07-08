@@ -49,8 +49,6 @@ model Product {
 
   relatedProducts Product[] @relation("RelatedProducts")
   relatedTo       Product[] @relation("RelatedProducts")
-
-  @@index([categoryId], map: "Product_categoryId_fkey")
 }
 
 
